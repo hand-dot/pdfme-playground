@@ -1,8 +1,8 @@
-import { Template, Font, checkTemplate } from "@pdfme/common";
-import { Form, Viewer, Designer } from "@pdfme/ui";
+import { Font, Template, checkTemplate } from "@pdfme/common";
 import { generate } from "@pdfme/generator";
-import { text, barcodes, image } from "@pdfme/schemas"
-import plugins from "./plugins"
+import { barcodes, image } from "@pdfme/schemas";
+import { Designer, Form, Viewer } from "@pdfme/ui";
+import plugins from "./plugins";
 
 const fontObjList = [
   {
@@ -102,7 +102,7 @@ ${e}`);
 
 export const getPlugins = () => {
   return {
-    Text: text,
+    Text: plugins.textPlugin,
     Signature: plugins.signature,
     QR: barcodes.qrcode,
     Image: image,

@@ -1,7 +1,9 @@
 import { signature } from './signature'
+import { textPlugin } from "./text"
 
 const plugins = {
-    signature
+    signature,
+    textPlugin
 }
 
 export default plugins
