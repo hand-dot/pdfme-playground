@@ -58,6 +58,22 @@ export const textPlugin: Plugin<TextSchema> = {
     pdf: text.pdf,
     propPanel: {
         schema: ({ options, i18n, activeSchema, changeSchemas, theme }) => {
+            // @ts-ignore
+            const _activeSchema = activeSchema as TextSchema;
+            const updateSchemaIfDifferent = (key: string, themeKey: string, defaultValue: string) => {
+                const themeValue = extractValueFromTheme(themeKey, testTheme, defaultValue);
+                if (themeValue !== _activeSchema[key]) {
+                    changeSchemas([{ key, schemaId: activeSchema.id, value: themeValue }]);
+                }
+            }
+            if (_activeSchema.fontColorFromTheme) {
+                updateSchemaIfDifferent('fontColor', _activeSchema.fontColorFromTheme, DEFAULT_FONT_COLOR);
+            }
+            if (_activeSchema.backgroundColorFromTheme) {
+                updateSchemaIfDifferent('backgroundColor', _activeSchema.backgroundColorFromTheme, '');
+            }
+
+
             const font = options.font || { [DEFAULT_FONT_NAME]: { data: '', fallback: true } };
             const fontNames = Object.keys(font);
             const fallbackFontName = getFallbackFontName(font);
@@ -143,17 +159,7 @@ export const textPlugin: Plugin<TextSchema> = {
                             { label: 'Primary', value: '#primary.main#' },
                             { label: 'Secondary', value: '#secondary.main#' },
                             { label: 'Primary Dark', value: '#primary.dark#' }
-                        ],
-                        onChange: (value: string) => {
-                            changeSchemas([
-                                { key: 'fontColorFromTheme', schemaId: activeSchema.id, value },
-                                {
-                                    key: 'fontColor',
-                                    schemaId: activeSchema.id,
-                                    value: extractValueFromTheme(value, testTheme, DEFAULT_FONT_COLOR)
-                                }
-                            ]);
-                        }
+                        ]
                     }
                 },
                 divider2: {
@@ -190,16 +196,7 @@ export const textPlugin: Plugin<TextSchema> = {
                             { label: 'Primary Dark', value: '#primary.dark#' }
                             // { label: 'Color Picker', value: 'custom' }
                         ],
-                        onChange: (value: string) => {
-                            changeSchemas([
-                                { key: 'backgroundColorFromTheme', schemaId: activeSchema.id, value },
-                                {
-                                    key: 'backgroundColor',
-                                    schemaId: activeSchema.id,
-                                    value: extractValueFromTheme(value, testTheme, 'transparent')
-                                }
-                            ]);
-                        }
+
                     }
                 }
             };
